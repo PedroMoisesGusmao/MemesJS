@@ -1,0 +1,140 @@
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #181818;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+  
+  /* Header */
+  .header {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 18px;
+    background: linear-gradient(to right, #9225e6, #b56aff);
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  /* Área do carrossel */
+  .carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+  }
+  
+  /* Memes (Stories) */
+  .meme {
+    position: absolute;
+    width: 250px; /* Aumentado o tamanho do meme */
+    height: 250px;
+    border-radius: 10px;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+  
+  /* Meme atual (centro) */
+  .center {
+    transform: translateX(0) scale(1);
+    z-index: 2;
+    opacity: 1;
+  }
+  
+  /* Meme anterior (esquerda) */
+  .left {
+    transform: translateX(-120%) scale(0.85);
+    opacity: 0.6;
+  }
+  
+  /* Meme próximo (direita) */
+  .right {
+    transform: translateX(120%) scale(0.85);
+    opacity: 0.6;
+  }
+  
+  /* Ajuste da imagem do meme */
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* Texto dentro do meme */
+  .text {
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  /* Botões de controle */
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    position: absolute;
+    bottom: 30px;
+  }
+  
+  /* Estilos dos botões */
+  .button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #9225e6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  
+  .button:hover {
+    background: #b56aff;
+  }
+  
+  /* Botão de download */
+  .download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .download:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
