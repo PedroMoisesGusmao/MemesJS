@@ -3,13 +3,15 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
+import { Meme } from "../../api/types";
+import getTemplates from "../../api/memeService";
 import styles from "./MemeCarousel.module.css";
 
-const memes = [
-  { id: 1, url: "https://i.em.com.br/GI_TR00H45g-1JWYvHM1ASVg9gs=/1200x1200/smart/imgsapp.em.com.br/app/noticia_127983242361/2022/11/06/1417823/meme-de-internet_1_81924.jpg", text: "O PODER DOS MEMES ESTÁ COM VOCÊ" },
-  { id: 2, url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvKjQTyrWUfYik63PCjUAm9X9XAW6PkpyHLw&s", text: "Intuição ou trauma???" },
-  { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
-];
+// { id: 1, url: "https://i.em.com.br/GI_TR00H45g-1JWYvHM1ASVg9gs=/1200x1200/smart/imgsapp.em.com.br/app/noticia_127983242361/2022/11/06/1417823/meme-de-internet_1_81924.jpg", text: "O PODER DOS MEMES ESTÁ COM VOCÊ" },
+// { id: 2, url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvKjQTyrWUfYik63PCjUAm9X9XAW6PkpyHLw&s", text: "Intuição ou trauma???" },
+// { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
+
+const memes: Meme[] = await getTemplates();
 
 export default function MemeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -48,7 +50,7 @@ export default function MemeCarousel() {
                 transition={{ duration: 0.5 }}
               >
                 <img src={meme.url} alt="Meme" className={styles.image} />
-                <p className={styles.text}>{meme.text}</p>
+                <p className={styles.text}>{meme.name}</p>
               </motion.div>
             );
           })}

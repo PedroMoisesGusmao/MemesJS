@@ -1,23 +1,17 @@
-require("dotenv").config();
+import { Meme } from "./types";
 
-const username: string = process.env.IMGFLIP_API_USERNAME!;
-const password: string = process.env.IMGFLIP_API_PASSWORD!;
+interface ApiResponse {
+    success: boolean;
+    data: {
+      memes: Meme[];
+    };
+  }
 
-function makeMeme(templateId: string, text0: string, text1: string) {
-    const params = new URLSearchParams({
-        "template_id": templateId,
-        "username": username,
-        "password": password,
-        "text0": text0,
-        "text1" : text1
-    });
-    fetch("https://api.imgflip.com/caption_image", {
-        method: "POST",
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: params
-    })
-    .then((data) => data.json())
-    .then((response) => response)
+async function getTemplates(): Promise<Meme[]> {
+    const response = await fetch("https://api.imgflip.com/get_memes");
+    const jsonResponse: ApiResponse = await response.json()
+
+    return jsonResponse.data.memes;
 }
 
-export default makeMeme;
+export default getTemplates;
