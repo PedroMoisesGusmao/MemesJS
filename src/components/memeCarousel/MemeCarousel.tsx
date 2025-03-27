@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
 import { Meme } from "../../api/types";
@@ -11,7 +11,16 @@ import styles from "./MemeCarousel.module.css";
 // { id: 2, url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvKjQTyrWUfYik63PCjUAm9X9XAW6PkpyHLw&s", text: "Intuição ou trauma???" },
 // { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
 
-const memes: Meme[] = await getTemplates();
+useEffect(() => {
+ async function fetchMemes() {
+    const templates = await getTemplates();
+    setMemes(templates);
+ }
+
+ fetchMemes();
+}, [])
+
+const [memes, setMemes] = useState<Meme[]>([]);
 
 export default function MemeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
