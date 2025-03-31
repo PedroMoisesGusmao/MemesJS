@@ -11,18 +11,18 @@ import styles from "./MemeCarousel.module.css";
 // { id: 2, url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvKjQTyrWUfYik63PCjUAm9X9XAW6PkpyHLw&s", text: "Intuição ou trauma???" },
 // { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
 
-useEffect(() => {
- async function fetchMemes() {
-    const templates = await getTemplates();
-    setMemes(templates);
- }
-
- fetchMemes();
-}, [])
-
-const [memes, setMemes] = useState<Meme[]>([]);
-
 export default function MemeCarousel() {
+  const [memes, setMemes] = useState<Meme[]>([]);
+  
+  useEffect(() => {
+    async function fetchMemes() {
+       const templates = await getTemplates();
+       setMemes(templates);
+    }
+   
+    fetchMemes();
+   }, [])
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
@@ -60,6 +60,17 @@ export default function MemeCarousel() {
               >
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
+
+                <input 
+                  type="text" 
+                  placeholder="Texto superior" 
+                  className={styles.input} 
+                />
+                <input 
+                  type="text" 
+                  placeholder="Texto inferior" 
+                  className={styles.input} 
+                />
               </motion.div>
             );
           })}
