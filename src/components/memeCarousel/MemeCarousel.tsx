@@ -23,7 +23,7 @@ export default function MemeCarousel() {
     fetchMemes();
    }, [])
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
   const prevMeme = () => setCurrentIndex((prev) => (prev - 1 + memes.length) % memes.length);
@@ -50,6 +50,19 @@ export default function MemeCarousel() {
             if (index === currentIndex) isCurrent = "input";
             if (position === "hidden") return null; // Oculta memes que não fazem parte do layout
 
+            function createInputField({ box_count }) {
+              const lista: Array<HTMLInputElement> = [];
+              for (let i = 0; i < box_count; i++) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.id = `input${i}`
+                input.className = styles[isCurrent];
+                lista.push(input);
+              }
+
+              return lista;              
+            }
+
             return (
               <motion.div
                 key={meme.id}
@@ -62,16 +75,6 @@ export default function MemeCarousel() {
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
 
-                <input 
-                  type="text" 
-                  placeholder="Texto superior" 
-                  className={styles[isCurrent]} 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Texto inferior" 
-                  className={styles.input} 
-                />
               </motion.div>
             );
           })}
