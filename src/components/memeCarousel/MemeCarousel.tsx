@@ -13,6 +13,7 @@ import styles from "./MemeCarousel.module.css";
 
 export default function MemeCarousel() {
   const [memes, setMemes] = useState<Meme[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(1);
   
   useEffect(() => {
     async function fetchMemes() {
@@ -22,8 +23,6 @@ export default function MemeCarousel() {
    
     fetchMemes();
    }, [])
-
-  const [currentIndex, setCurrentIndex] = useState(1);
 
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
   const prevMeme = () => setCurrentIndex((prev) => (prev - 1 + memes.length) % memes.length);
@@ -74,6 +73,10 @@ export default function MemeCarousel() {
               >
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
+
+                {input.map(value => {
+                  
+                })}
 
               </motion.div>
             );
