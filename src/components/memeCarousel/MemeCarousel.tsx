@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
 import { Meme } from "../../api/types";
@@ -14,13 +14,6 @@ import styles from "./MemeCarousel.module.css";
 export default function MemeCarousel() {
   const [memes, setMemes] = useState<Meme[]>([]);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [inputs, setInputs] = useState<string[]>([])
-
-  useEffect(() => {
-    if (memes.length > 0) {
-      setInputs(Array(memes[currentIndex].box_count).fill(""));
-    }
-  }, [currentIndex, memes]);
   
   useEffect(() => {
     async function fetchMemes() {
@@ -56,6 +49,18 @@ export default function MemeCarousel() {
             if (index === currentIndex) isCurrent = "input";
             if (position === "hidden") return null; // Oculta memes que não fazem parte do layout
 
+            const inputs: Array<ReactElement> = [];
+
+            if (position === "center"){
+              for (let i = 0; i < meme.box_count; i++) {
+                  inputs.push(
+                    <input
+                    key={index}
+                    type="text"
+                    className={styles.input}
+                    />)
+                }
+            }
             return (
               <motion.div
                 key={meme.id}
@@ -67,17 +72,8 @@ export default function MemeCarousel() {
               >
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
-
-                {inputs.map((input) => {
-                  if (index == currentIndex){
-                    return (
-                        <input
-                        key={inputs.indexOf(input)}
-                        type="text"
-                        className={styles.input}
-                        />
-                    )}
-                })}
+                
+                {inputs}
 
               </motion.div>
             );
