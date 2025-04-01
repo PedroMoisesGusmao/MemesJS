@@ -14,6 +14,13 @@ import styles from "./MemeCarousel.module.css";
 export default function MemeCarousel() {
   const [memes, setMemes] = useState<Meme[]>([]);
   const [currentIndex, setCurrentIndex] = useState(1);
+  const [inputs, setInputs] = useState<string[]>([])
+
+  useEffect(() => {
+    if (memes.length > 0) {
+      setInputs(Array(memes[currentIndex].box_count).fill(""));
+    }
+  }, [currentIndex, memes]);
   
   useEffect(() => {
     async function fetchMemes() {
@@ -49,19 +56,6 @@ export default function MemeCarousel() {
             if (index === currentIndex) isCurrent = "input";
             if (position === "hidden") return null; // Oculta memes que não fazem parte do layout
 
-            function createInputField({ box_count }) {
-              const lista: Array<HTMLInputElement> = [];
-              for (let i = 0; i < box_count; i++) {
-                const input = document.createElement("input");
-                input.type = "text";
-                input.id = `input${i}`
-                input.className = styles[isCurrent];
-                lista.push(input);
-              }
-
-              return lista;              
-            }
-
             return (
               <motion.div
                 key={meme.id}
@@ -74,8 +68,15 @@ export default function MemeCarousel() {
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
 
-                {input.map(value => {
-                  
+                {inputs.map((input) => {
+                  if (index == currentIndex){
+                    return (
+                        <input
+                        key={inputs.indexOf(input)}
+                        type="text"
+                        className={styles.input}
+                        />
+                    )}
                 })}
 
               </motion.div>
