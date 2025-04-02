@@ -1,17 +1,50 @@
-import { Meme } from "./types";
+import { GetMeme, PostMeme } from "./types";
+require('dotenv').config();
 
-interface ApiResponse {
+interface GetResponse {
     success: boolean;
     data: {
-      memes: Meme[];
+      memes: GetMeme[];
     };
-  }
+}
 
-async function getTemplates(): Promise<Meme[]> {
+interface PostResponse {
+    success: boolean;
+    data: {
+      url: string,
+      page_url: string
+    }
+}
+
+async function getTemplates(): Promise<GetMeme[]> {
     const response = await fetch("https://api.imgflip.com/get_memes");
-    const jsonResponse: ApiResponse = await response.json()
+    const jsonResponse: GetResponse = await response.json()
 
     return jsonResponse.data.memes;
 }
 
-export default getTemplates;
+async function postMeme(meme: PostMeme): Promise<PostResponse> {
+  const lista: Array<{}> = [];
+  const params: URLSearchParams = new URLSearchParams();
+
+  params.append('template_id', meme.id);
+  params.append('username', process.env.IMGFLIP_API_USERNAME!);
+  params.append('password', process.env.IMGFLIP_API_PASSWORD!);
+  
+  meme.text.forEach((texto, index) => {
+    params.append(`boxes[${index}][text]`, texto);
+  });
+
+  const response = await fetch("https://api.imgflip.com/caption_image", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: params.toString()
+  })
+
+  const jsonResponse: PostResponse = await response.json();
+  return jsonResponse;
+}
+
+export default { getTemplates, postMeme };

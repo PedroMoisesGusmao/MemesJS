@@ -3,8 +3,8 @@
 import { useState, useEffect, ReactElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
-import { Meme } from "../../api/types";
-import getTemplates from "../../api/memeService";
+import { GetMeme, PostMeme } from "../../api/types";
+import memeService from "../../api/memeService";
 import styles from "./MemeCarousel.module.css";
 
 // { id: 1, url: "https://i.em.com.br/GI_TR00H45g-1JWYvHM1ASVg9gs=/1200x1200/smart/imgsapp.em.com.br/app/noticia_127983242361/2022/11/06/1417823/meme-de-internet_1_81924.jpg", text: "O PODER DOS MEMES ESTÁ COM VOCÊ" },
@@ -12,12 +12,12 @@ import styles from "./MemeCarousel.module.css";
 // { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
 
 export default function MemeCarousel() {
-  const [memes, setMemes] = useState<Meme[]>([]);
+  const [memes, setMemes] = useState<GetMeme[]>([]);
   const [currentIndex, setCurrentIndex] = useState(1);
   
   useEffect(() => {
     async function fetchMemes() {
-       const templates = await getTemplates();
+       const templates = await memeService.getTemplates();
        setMemes(templates);
     }
    
@@ -26,10 +26,11 @@ export default function MemeCarousel() {
 
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
   const prevMeme = () => setCurrentIndex((prev) => (prev - 1 + memes.length) % memes.length);
-  
+
   const downloadMeme = () => {
     const link = document.createElement("a");
     link.href = memes[currentIndex].url;
+    link.target = "_blank"
     link.download = "meme.png";
     link.click();
   };
@@ -55,7 +56,8 @@ export default function MemeCarousel() {
               for (let i = 0; i < meme.box_count; i++) {
                   inputs.push(
                     <input
-                    key={index}
+                    id={`text_${i}`}
+                    key={i}
                     type="text"
                     className={styles.input}
                     />)
@@ -73,7 +75,9 @@ export default function MemeCarousel() {
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
                 
-                {inputs}
+                <div className={styles.inputs}>
+                  {inputs}
+                </div>
 
               </motion.div>
             );
