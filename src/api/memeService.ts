@@ -1,5 +1,6 @@
 import { GetMeme, PostMeme } from "./types";
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config()
 
 interface GetResponse {
     success: boolean;
@@ -24,7 +25,6 @@ async function getTemplates(): Promise<GetMeme[]> {
 }
 
 async function postMeme(meme: PostMeme): Promise<PostResponse> {
-  const lista: Array<{}> = [];
   const params: URLSearchParams = new URLSearchParams();
 
   params.append('template_id', meme.id);

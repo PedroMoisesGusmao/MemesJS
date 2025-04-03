@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ReactElement } from "react";
+import { useState, useEffect, useRef, ReactElement } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
 import { GetMeme, PostMeme } from "../../api/types";
@@ -12,9 +12,15 @@ import styles from "./MemeCarousel.module.css";
 // { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
 
 export default function MemeCarousel() {
+  const inputs: Array<ReactElement> = [];
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [memes, setMemes] = useState<GetMeme[]>([]);
   const [currentIndex, setCurrentIndex] = useState(1);
   
+  useEffect(() => {
+    inputRefs.current = Array(memes[currentIndex]?.box_count || 0).fill("");
+  }, [memes, currentIndex]);
+
   useEffect(() => {
     async function fetchMemes() {
        const templates = await memeService.getTemplates();
@@ -27,11 +33,22 @@ export default function MemeCarousel() {
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
   const prevMeme = () => setCurrentIndex((prev) => (prev - 1 + memes.length) % memes.length);
 
-  const downloadMeme = () => {
+  const downloadMeme = async () => {
     const link = document.createElement("a");
-    link.href = memes[currentIndex].url;
-    link.target = "_blank"
-    link.download = "meme.png";
+
+    const values = inputRefs.current.map((input) => input?.value || "");
+
+    const meme: PostMeme = {
+      id: memes[currentIndex].id,
+      text: values
+    }
+
+    const memeResponse = await memeService.postMeme(meme);
+
+    console.log(memeResponse)
+
+    link.href = memeResponse.data.url;
+    link.target = "_blank";
     link.click();
   };
 
@@ -50,18 +67,16 @@ export default function MemeCarousel() {
             if (index === currentIndex) isCurrent = "input";
             if (position === "hidden") return null; // Oculta memes que não fazem parte do layout
 
-            const inputs: Array<ReactElement> = [];
-
             if (position === "center"){
               for (let i = 0; i < meme.box_count; i++) {
                   inputs.push(
                     <input
-                    id={`text_${i}`}
                     key={i}
                     type="text"
                     className={styles.input}
+                    ref={(el) => {inputRefs.current[i] = el}}
                     />)
-                }
+              }
             }
             return (
               <motion.div
@@ -75,8 +90,8 @@ export default function MemeCarousel() {
                 <img src={meme.url} alt="Meme" className={styles.image} />
                 <p className={styles.text}>{meme.name}</p>
                 
-                <div className={styles.inputs}>
-                  {inputs}
+                <div>
+                  {position === "center" ? inputs : null}
                 </div>
 
               </motion.div>
