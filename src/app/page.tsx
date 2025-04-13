@@ -3,9 +3,5 @@ import styles from "./page.module.css";
 import MemeCarousel from "../components/memeCarousel/MemeCarousel";
 
 export default function Home() {
-  return (
-    <body className={styles.body}>
-      <MemeCarousel/>
-    </body>
-)
+  return <MemeCarousel/>
 }
