@@ -1,6 +1,4 @@
 import { GetMeme, PostMeme } from "./types";
-import dotenv from 'dotenv';
-dotenv.config()
 
 interface GetResponse {
     success: boolean;
@@ -28,8 +26,8 @@ async function postMeme(meme: PostMeme): Promise<PostResponse> {
   const params: URLSearchParams = new URLSearchParams();
 
   params.append('template_id', meme.id);
-  params.append('username', process.env.IMGFLIP_API_USERNAME!);
-  params.append('password', process.env.IMGFLIP_API_PASSWORD!);
+  params.append('username', process.env.NEXT_PUBLIC_IMGFLIP_API_USERNAME!);
+  params.append('password', process.env.NEXT_PUBLIC_IMGFLIP_API_PASSWORD!);
   
   meme.text.forEach((texto, index) => {
     params.append(`boxes[${index}][text]`, texto);

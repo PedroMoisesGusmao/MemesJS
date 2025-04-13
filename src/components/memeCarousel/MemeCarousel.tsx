@@ -109,6 +109,7 @@ export default function MemeCarousel() {
             className={styles.input}
             value={value}
             onChange={(e) => handleInputChange(index, e.target.value)}
+            ref={(el) => { inputRefs.current[index] = el }}
           />
         ))}
       </div>
