@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   position: relative;
 }
   
@@ -21,7 +20,7 @@
   font-size: 18px;
   background: linear-gradient(to right, #9225e6, #b56aff);
   color: white;
-  position: absolute;
+  position: fixed;
 }
 
 .carousel {
@@ -99,8 +98,6 @@
   align-items: center;
   gap: 20px;
   margin-top: 20px;
-  position: absolute;
-  bottom: 30px;
 }
 
 /* Estilos dos botões */
@@ -170,4 +167,11 @@
 .input::placeholder {
   color: #999;
   font-style: italic;
+}
+
+.input_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
 }
