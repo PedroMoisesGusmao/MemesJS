@@ -12,14 +12,10 @@ import styles from "./MemeCarousel.module.css";
 // { id: 3, url: "https://i.imgflip.com/85xkix.jpg", text: "SPRINGTRAP: NO CHILDREN!?" }
 
 export default function MemeCarousel() {
-  const inputs: Array<ReactElement> = [];
+  const [inputs, setInputs] = useState<string[]>([]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [memes, setMemes] = useState<GetMeme[]>([]);
   const [currentIndex, setCurrentIndex] = useState(1);
-  
-  useEffect(() => {
-    inputRefs.current = Array(memes[currentIndex]?.box_count || 0).fill("");
-  }, [memes, currentIndex]);
 
   useEffect(() => {
     async function fetchMemes() {
@@ -28,7 +24,20 @@ export default function MemeCarousel() {
     }
    
     fetchMemes();
-   }, [])
+   }, []);
+
+  useEffect(() => {
+    if (memes.length > 0) {
+      const boxCount = memes[currentIndex]?.box_count || 0;
+      setInputs(Array(boxCount).fill(""));
+    }
+  }, [currentIndex, memes]);
+
+  const handleInputChange = (index: number, value: string) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
 
   const nextMeme = () => setCurrentIndex((prev) => (prev + 1) % memes.length);
   const prevMeme = () => setCurrentIndex((prev) => (prev - 1 + memes.length) % memes.length);
@@ -67,38 +76,41 @@ export default function MemeCarousel() {
             if (index === currentIndex) isCurrent = "input";
             if (position === "hidden") return null; // Oculta memes que não fazem parte do layout
 
-            if (position === "center"){
-              for (let i = 0; i < meme.box_count; i++) {
-                  inputs.push(
-                    <input
-                    key={i}
-                    type="text"
-                    className={styles.input}
-                    ref={(el) => {inputRefs.current[i] = el}}
-                    />)
-              }
-            }
             return (
               <motion.div
                 key={meme.id}
-                className={`${styles.meme} ${styles[position]}`}
+                className={styles.meme}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5 }}
               >
-                <img src={meme.url} alt="Meme" className={styles.image} />
+                <img 
+                  src={meme.url}
+                  alt={meme.name}
+                  width={meme.width}
+                  height={meme.height}
+                  className={styles.image}
+                />
                 <p className={styles.text}>{meme.name}</p>
-                
-                <div>
-                  {position === "center" ? inputs : null}
-                </div>
-
               </motion.div>
             );
           })}
         </AnimatePresence>
       </div>
+
+      <div className={styles.input_list}>
+        {inputs.map((value, index) => (
+            <input
+            key={index}
+            type="text"
+            className={styles.input}
+            value={value}
+            onChange={(e) => handleInputChange(index, e.target.value)}
+          />
+        ))}
+      </div>
+
       <div className={styles.controls}>
         <button className={styles.button} onClick={prevMeme}><ArrowLeft /> Back</button>
         <button className={styles.download} onClick={downloadMeme}><Download /></button>
