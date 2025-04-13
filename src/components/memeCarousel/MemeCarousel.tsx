@@ -62,8 +62,10 @@ export default function MemeCarousel() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>Memes generator</div>
+    <body className={styles.container}>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Memes generator</h2>
+      </div>
       <div className={styles.carousel}>
         <AnimatePresence>
           {memes.map((meme, index) => {
@@ -116,6 +118,6 @@ export default function MemeCarousel() {
         <button className={styles.download} onClick={downloadMeme}><Download /></button>
         <button className={styles.button} onClick={nextMeme}>Next <ArrowRight /></button>
       </div>
-    </div>
+    </body>
   );
 }

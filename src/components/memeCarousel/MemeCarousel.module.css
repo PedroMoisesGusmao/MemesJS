@@ -11,14 +11,20 @@
   align-items: center;
   position: relative;
 }
-  
+
 .header {
-  width: 100%;
-  padding: 15px;
+  width: 100%;  padding: 15px;
   text-align: left;
   font-weight: bold;
   font-size: 18px;
   background: linear-gradient(to right, #9225e6, #b56aff);
+  padding-left: 30px;
+  color: white;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
   color: white;
   position: fixed;
 }
@@ -34,36 +40,26 @@
   margin-top: 50px;
 }
 
-/* Memes (Stories) */
 .meme {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 270px; /* Aumentado o tamanho do meme */
-  height: 400px;
+  width: 16vw;
+  height: 4vh;
   border-radius: 10px;
   padding: 20px;
   margin-top: 50px;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
-  
-/* Meme atual (centro) */
-.center {
-  transform: translateX(1) scale(1);
-  z-index: 2;
-  opacity: 1;
-}
 
-/* Ajuste da imagem do meme */
 .image {
   width: 100%;
   max-height: 250px;
   border-radius: 10px;
 }
 
-/* Texto dentro do meme */
 .text {
   display: flex;
   top: 10px;
@@ -78,7 +74,6 @@
   border-radius: 5px;
 }
 
-/* Texto dentro do meme */
 .text-next {
   bottom: 5px;
   width: 100%;
@@ -89,6 +84,10 @@
   background: rgba(0, 0, 0, 0.5);
   padding: 5px;
   border-radius: 5px;
+}
+
+.inputs {
+  max-height: 200px;
 }
 
 /* Botões de controle */
